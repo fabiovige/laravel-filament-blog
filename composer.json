@@ -8,7 +8,8 @@
         "php": "^8.2",
         "filament/filament": "^3.2",
         "laravel/framework": "^v11.0.8",
-        "laravel/tinker": "^2.9"
+        "laravel/tinker": "^2.9",
+        "spatie/laravel-permission": "^6.4"
     },
     "require-dev": {
         "doctrine/dbal": "^3.8",
