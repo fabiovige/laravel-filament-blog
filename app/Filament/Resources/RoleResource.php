@@ -16,11 +16,8 @@ use Illuminate\Database\Eloquent\SoftDeletingScope;
 class RoleResource extends Resource
 {
     protected static ?string $model = Role::class;
-
-    protected static ?string $modelLabel = 'Perfil';
-    protected static ?string $pluralModelLabel = 'Perfis';
-
-    protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
+    protected static ?string $navigationIcon = 'heroicon-o-identification';
+    protected static ?string $navigationGroup = 'Configurações';
 
     public static function form(Form $form): Form
     {
@@ -29,11 +26,13 @@ class RoleResource extends Resource
             ->schema([
                 Forms\Components\TextInput::make('name')
                     ->required()
+                    ->unique(ignoreRecord: true)
                     ->maxLength(255),
 
                 Forms\Components\Select::make('permission')
                     ->relationship('permissions', 'name')
                     ->multiple()
+                    ->preload(5)
             ]);
     }
 
@@ -45,7 +44,7 @@ class RoleResource extends Resource
                     ->searchable(),
 
                 Tables\Columns\TextColumn::make('permissions.name')
-                    ->searchable(),
+                    ->badge(),
 
                 Tables\Columns\TextColumn::make('created_at')
                     ->dateTime()
@@ -83,5 +82,11 @@ class RoleResource extends Resource
             'create' => Pages\CreateRole::route('/create'),
             'edit' => Pages\EditRole::route('/{record}/edit'),
         ];
+    }
+
+    public static function getEloquentQuery(): Builder
+    {
+        return parent::getEloquentQuery()
+            ->where('id', '!=', 1);
     }
 }

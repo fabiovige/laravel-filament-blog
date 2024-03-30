@@ -19,17 +19,14 @@ class PostResource extends Resource
 {
     protected static ?string $model = Post::class;
 
-    protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
+    protected static ?string $navigationIcon = 'heroicon-o-document-text';
 
     public static function form(Form $form): Form
     {
         return $form
-            ->columns(2)
+            ->columns(1)
             ->schema([
                 Forms\Components\TextInput::make('title')
-                    ->required()
-                    ->maxLength(2048),
-                Forms\Components\TextInput::make('slug')
                     ->required()
                     ->maxLength(2048),
                 Forms\Components\RichEditor::make('body')
@@ -37,14 +34,19 @@ class PostResource extends Resource
                     ->columnSpanFull(),
                 Forms\Components\Toggle::make('active')->label('Ativo')
                     ->required(),
-                Forms\Components\DatePicker::make('published_at')
-                    ->required(),
                 Forms\Components\Select::make('user_id')
                     ->relationship('user', 'name')
                     ->required(),
-                /*Select::make('categories')
+                Select::make('categories')
                     ->relationship('categories', 'title')
-                    ->multiple()*/
+                    ->multiple()
+                    ->preload()
+                    ->createOptionForm([
+                        Forms\Components\TextInput::make('title')
+                            ->required(),
+                        Forms\Components\TextInput::make('slug')
+                            ->required(),
+                    ]),
             ]);
     }
 
@@ -53,14 +55,18 @@ class PostResource extends Resource
         return $table
             ->columns([
                 Tables\Columns\TextColumn::make('title')
+                    ->sortable()
                     ->searchable(),
                 Tables\Columns\TextColumn::make('slug')
+                    ->sortable()
                     ->searchable(),
                 Tables\Columns\ToggleColumn::make('active')
                     ->label('Ativo'),
                 Tables\Columns\TextColumn::make('published_at')
-                    ->dateTime()
-                    ->sortable(),
+                    ->sortable()
+                    ->dateTime('d/m/Y H:i')
+                    ->sortable()
+                    ->toggleable(isToggledHiddenByDefault: true),
                 Tables\Columns\TextColumn::make('user.name')
                     ->numeric()
                     ->sortable(),
@@ -87,12 +93,12 @@ class PostResource extends Resource
             ]);
     }
 
-    public static function getRelations(): array
+    /*public static function getRelations(): array
     {
         return [
             CategoriesRelationManager::class
         ];
-    }
+    }*/
 
     public static function getPages(): array
     {
@@ -103,4 +109,13 @@ class PostResource extends Resource
             'edit' => Pages\EditPost::route('/{record}/edit'),
         ];
     }
+
+    public static function getEloquentQuery(): Builder
+    {
+        return parent::getEloquentQuery()
+            ->when(auth()->user()->id !== 1, function ($query) {
+                return $query->where('user_id', auth()->id());
+            });
+    }
+
 }
