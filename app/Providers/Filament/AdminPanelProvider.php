@@ -35,6 +35,7 @@ class AdminPanelProvider extends PanelProvider
             ->login()
             ->userMenuItems([
                 'logout' => MenuItem::make()->label('Sair'),
+                'profile' => MenuItem::make()->label('Editar perfil'),
                 // ...
             ])
             ->colors([
