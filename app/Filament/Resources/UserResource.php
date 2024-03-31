@@ -3,7 +3,6 @@
 namespace App\Filament\Resources;
 
 use App\Filament\Resources\UserResource\Pages;
-use App\Filament\Resources\UserResource\RelationManagers;
 use App\Models\User;
 use Filament\Forms;
 use Filament\Forms\Form;
@@ -39,7 +38,9 @@ class UserResource extends Resource
                 Forms\Components\Select::make('role')
                     ->multiple()
                     ->required()
-                    ->relationship('roles', 'name')
+                    ->relationship('roles', 'name', function (Builder $query) {
+                        return $query->where('name', '!=', 'admin');
+                    })
                     ->preload()
             ]);
     }

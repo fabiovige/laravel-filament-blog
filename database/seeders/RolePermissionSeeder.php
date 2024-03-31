@@ -31,15 +31,7 @@ class RolePermissionSeeder extends Seeder
         }
 
         $user = User::find(1);
-        if ($user) {
-            $adminRole = Role::where('name', 'admin')->first();
-            if ($adminRole) {
-                $user->assignRole($adminRole);
-            } else {
-                echo "Role 'admin' não encontrado.\n";
-            }
-        } else {
-            echo "Usuário com ID 1 não encontrado.\n";
-        }
+        $adminRole = Role::where('name', 'admin')->first();
+        $user->assignRole($adminRole);
     }
 }
