@@ -16,23 +16,32 @@ use Illuminate\Database\Eloquent\SoftDeletingScope;
 class RoleResource extends Resource
 {
     protected static ?string $model = Role::class;
+
     protected static ?string $navigationIcon = 'heroicon-o-identification';
     protected static ?string $navigationGroup = 'Configurações';
+
+    protected static ?string $modelLabel = 'Perfil';
+    protected static ?string $pluralModelLabel = 'Perfis';
 
     public static function form(Form $form): Form
     {
         return $form
-            ->columns(1)
             ->schema([
-                Forms\Components\TextInput::make('name')
-                    ->required()
-                    ->unique(ignoreRecord: true)
-                    ->maxLength(255),
+                Forms\Components\Card::make()
+                ->schema([
+                    Forms\Components\TextInput::make('name')
+                        ->label('Nome')
+                        ->required()
+                        ->unique(ignoreRecord: true)
+                        ->maxLength(255),
 
-                Forms\Components\Select::make('permission')
-                    ->relationship('permissions', 'name')
-                    ->multiple()
-                    ->preload(5)
+                    Forms\Components\Select::make('permission')
+                        ->label('Permissões')
+                        ->relationship('permissions', 'name')
+                        ->multiple()
+                        ->preload()
+                        ->required()
+                ])
             ]);
     }
 
@@ -41,17 +50,21 @@ class RoleResource extends Resource
         return $table
             ->columns([
                 Tables\Columns\TextColumn::make('name')
+                    ->label('Nome')
                     ->searchable(),
 
                 Tables\Columns\TextColumn::make('permissions.name')
+                    ->label('Permissões')
                     ->badge(),
 
                 Tables\Columns\TextColumn::make('created_at')
-                    ->dateTime()
+                    ->label('Data de criação')
+                    ->dateTime('d/m/Y H:i')
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
                 Tables\Columns\TextColumn::make('updated_at')
-                    ->dateTime()
+                    ->label('Data de atualização')
+                    ->dateTime('d/m/Y H:i')
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
             ])

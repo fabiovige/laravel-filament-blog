@@ -8,21 +8,12 @@ use Illuminate\Auth\Access\Response;
 
 class PermissionPolicy
 {
-    public function before(User $user, string $ability): bool|null
-    {
-        if ($user->id === 1) {
-            return true;
-        }
-
-        return null;
-    }
-
     /**
      * Determine whether the user can view any models.
      */
     public function viewAny(User $user): bool
     {
-        return $user->hasPermissionTo('view_any_permissions');
+        return true;
     }
 
     /**
@@ -30,7 +21,7 @@ class PermissionPolicy
      */
     public function view(User $user, Permission $permission): bool
     {
-        return $user->hasPermissionTo('view_permissions');
+        return false;
     }
 
     /**
@@ -38,7 +29,7 @@ class PermissionPolicy
      */
     public function create(User $user): bool
     {
-        return $user->hasPermissionTo('create_permissions');
+        return false;
     }
 
     /**
@@ -46,7 +37,7 @@ class PermissionPolicy
      */
     public function update(User $user, Permission $permission): bool
     {
-        return $user->hasPermissionTo('update_permissions');
+        return false;
     }
 
     /**
@@ -54,7 +45,7 @@ class PermissionPolicy
      */
     public function delete(User $user, Permission $permission): bool
     {
-        return $user->hasPermissionTo('delete_permissions');
+        return false;
     }
 
     /**

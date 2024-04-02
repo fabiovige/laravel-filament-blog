@@ -25,7 +25,6 @@ class AdminPanelProvider extends PanelProvider
     {
         return $panel
             ->login()
-            ->profile()
             ->profile(isSimple: false)
             ->spa()
             ->sidebarFullyCollapsibleOnDesktop()

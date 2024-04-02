@@ -110,6 +110,7 @@ class PostResource extends Resource
         ];
     }
 
+
     public static function getEloquentQuery(): Builder
     {
         return parent::getEloquentQuery()

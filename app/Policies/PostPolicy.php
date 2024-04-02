@@ -52,7 +52,7 @@ class PostPolicy
     {
         return (
             $user->hasPermissionTo('update_posts')
-            && $user->id === $post->user_id
+            and $user->id === $post->user_id
         );
     }
 
@@ -61,7 +61,10 @@ class PostPolicy
      */
     public function delete(User $user, Post $post): bool
     {
-        return $user->hasPermissionTo('delete_posts');
+        return (
+            $user->hasPermissionTo('delete_posts')
+            and $user->id === $post->user_id
+        );
     }
 
     /**
