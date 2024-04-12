@@ -49,14 +49,23 @@ class User extends Authenticatable implements FilamentUser
         ];
     }
 
+    public function userable()
+    {
+        return $this->morphTo();
+    }
 
     public function canAccessPanel(Panel $panel): bool
     {
         return true;
     }
 
-    public function userable()
+    public function agency()
     {
-        return $this->morphTo();
+        return $this->belongsTo(User::class, 'agency_id');
+    }
+
+    public function emitters()
+    {
+        return $this->hasMany(User::class, 'agency_id');
     }
 }

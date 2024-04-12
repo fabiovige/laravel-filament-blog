@@ -23,15 +23,12 @@ class SenderResource extends Resource
     {
         return $form
             ->schema([
-                Forms\Components\TextInput::make('nome')
+                Forms\Components\TextInput::make('name')
                     ->required()
                     ->maxLength(255),
-                Forms\Components\Select::make('agency_id')
-                    ->label('Agência')
-                    ->searchable()
+                Forms\Components\TextInput::make('agency_id')
                     ->required()
-                    ->relationship('agency', 'name')
-                    ->preload(),
+                    ->numeric(),
             ]);
     }
 
@@ -39,10 +36,10 @@ class SenderResource extends Resource
     {
         return $table
             ->columns([
-                Tables\Columns\TextColumn::make('nome')
+                Tables\Columns\TextColumn::make('name')
                     ->searchable(),
-                Tables\Columns\TextColumn::make('agency.name')
-                    ->badge()
+                Tables\Columns\TextColumn::make('agency_id')
+                    ->numeric()
                     ->sortable(),
                 Tables\Columns\TextColumn::make('created_at')
                     ->dateTime()

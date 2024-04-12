@@ -13,8 +13,8 @@ return new class extends Migration
     {
         Schema::create('senders', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('agency_id');
             $table->string('name');
+            $table->unsignedBigInteger('agency_id');
             $table->timestamps();
 
             $table->foreign('agency_id')->references('id')->on('agencies')->onDelete('cascade');

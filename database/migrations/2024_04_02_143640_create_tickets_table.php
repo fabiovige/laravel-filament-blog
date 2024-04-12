@@ -13,9 +13,10 @@ return new class extends Migration
     {
         Schema::create('tickets', function (Blueprint $table) {
             $table->id();
-            $table->morphs('ticketable'); // Cria 'ticketable_type' e 'ticketable_id'
             $table->string('details');
             $table->timestamps();
+
+            $table->morphs('ticketable');
         });
     }
 

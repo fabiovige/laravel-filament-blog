@@ -10,14 +10,4 @@ class Customer extends Model
     use HasFactory;
 
     protected $fillable = ['name'];
-
-    public function tickets()
-    {
-        return $this->morphMany(Ticket::class, 'ticketable');
-    }
-
-    public function user()
-    {
-        return $this->morphOne(User::class, 'userable');
-    }
 }

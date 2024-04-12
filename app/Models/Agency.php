@@ -11,14 +11,14 @@ class Agency extends Model
 
     protected $fillable = ['name'];
 
-    public function senders()
-    {
-        return $this->hasMany(Sender::class);
-    }
-
     public function tickets()
     {
         return $this->morphMany(Ticket::class, 'ticketable');
+    }
+
+    public function senders()
+    {
+        return $this->hasMany(Sender::class);
     }
 
     public function user()
